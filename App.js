@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import {
+  Profiles,
+  LensProvider,
+} from "@lens-protocol/react-native-lens-ui-kit";
+import ProfileView from "./ProfileView";
+import ViewFollowing from "./ViewFollowing";
+import ViewComment from "./ViewComments";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <LensProvider theme="dark">
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Profiles" component={ProfileComponent} />
+          <Stack.Screen name="Profile" component={ProfileView} />
+          <Stack.Screen name="ViewFollowing" component={ViewFollowing} />
+          <Stack.Screen name="ViewComment" component={ViewComment} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </LensProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+function ProfileComponent({ navigation }) {
+  return (
+    <Profiles
+      onProfilePress={(profile) => navigation.navigate("Profile", { profile })}
+    />
+  );
+}
